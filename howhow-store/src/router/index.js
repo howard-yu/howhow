@@ -1,51 +1,27 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
-import home from '@/views/home/home.vue'
+import HelloWorld from '@/components/HelloWorld'
+import Count from '@/components/count'
+import TodoList from '@/components/page/todo'
 
 Vue.use(Router)
 
-const originalPush = Router.prototype.push
-Router.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
-}
-
-const routes = [
-  { path: '/', name: 'home', component: home, children: [] }
-]
-
-const createRouter = () =>
-  new Router({
-    routes: routes
-  })
-
-const router = createRouter()
-
-export function setRouter(data) {
-  return new Promise(resolve => {
-    const asyncRoutes = []
-    data.forEach(key => {
-      switch (key) {
-        case 'SALES RSF Input':
-          asyncRoutes.push(home)
-          break
-      }
-    })
-    routes[0].children = []
-    routes[0].children = asyncRoutes.slice(0)
-
-    if (routes[0].children.length) {
-      routes[0]['redirect'] = routes[0].children[0].path
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'HelloWorld',
+      component: HelloWorld
+    },
+    {
+      path: '/count',
+      name: 'Count',
+      component: Count
+    },
+    {
+      path: '/todo',
+      name: 'TodoList',
+      component: TodoList
     }
-    router.addRoutes(routes)
-    resetRouter()
-    resolve(asyncRoutes)
-    console.log('addRoutes', routes)
-  })
-}
-
-export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher
-}
-export default router
+  ]
+})

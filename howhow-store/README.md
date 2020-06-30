@@ -1,4 +1,4 @@
-# howhow-store
+# timhowder-store
 
 > A Vue.js project
 
